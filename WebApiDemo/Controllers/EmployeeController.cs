@@ -57,5 +57,41 @@ namespace WebApiDemo.Controllers
                 };
             }
         }
+
+        [HttpPut(Name = "")]
+        public async Task<ApiResponse> PutAsync(long id, string name)
+        {
+            var updateEmployeeResult = await _employeeService.UpdateEmployeeAsync(id, name);
+            if (updateEmployeeResult.IsSuccess)
+            {
+                return new ApiResponse();
+            }
+            else
+            {
+                return new ApiResponse()
+                {
+                    Code = 500,
+                    Message = updateEmployeeResult.Error
+                };
+            }
+        }
+
+        [HttpDelete(Name = "")]
+        public async Task<ApiResponse> DeleteAsync(long id)
+        {
+            var deleteEmployeeResult = await _employeeService.DeleteEmployeeAsync(id);
+            if (deleteEmployeeResult.IsSuccess)
+            {
+                return new ApiResponse();
+            }
+            else
+            {
+                return new ApiResponse()
+                {
+                    Code = 500,
+                    Message = deleteEmployeeResult.Error
+                };
+            }
+        }
     }
 }

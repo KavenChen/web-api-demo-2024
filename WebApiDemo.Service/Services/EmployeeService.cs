@@ -56,5 +56,35 @@ namespace WebApiDemo.Service.Services
                 return new Result<Employee, string>(false, default, $"GetEmployeeAsync Error: Message: {ex.Message}, StackTrace: {ex.StackTrace}");
             }
         }
+
+        public async Task<Result<object, string>> UpdateEmployeeAsync(long id, string name)
+        {
+            try
+            {
+                var updateCount = await _employeeRepository.UpdateEmployeeAsync(id, name);
+                return updateCount > 0 ?
+                    new Result<object, string>(true, null, string.Empty) :
+                    new Result<object, string>(false, null, "UpdateEmployeeAsync Failed: update count is 0.");
+            }
+            catch (Exception ex)
+            {
+                return new Result<object, string>(false, default, $"UpdateEmployeeAsync Error: Message: {ex.Message}, StackTrace: {ex.StackTrace}");
+            }
+        }
+
+        public async Task<Result<object, string>> DeleteEmployeeAsync(long id)
+        {
+            try
+            {
+                var deleteCount = await _employeeRepository.DeleteEmployeeAsync(id);
+                return deleteCount > 0 ?
+                    new Result<object, string>(true, null, string.Empty) :
+                    new Result<object, string>(false, null, "DeleteEmployeeAsync Failed: delete count is 0.");
+            }
+            catch (Exception ex)
+            {
+                return new Result<object, string>(false, default, $"UpdateEmployeeAsync Error: Message: {ex.Message}, StackTrace: {ex.StackTrace}");
+            }
+        }
     }
 }

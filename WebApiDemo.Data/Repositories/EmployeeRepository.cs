@@ -33,5 +33,26 @@ namespace WebApiDemo.Data.Repositories
                 return await sqlConnection.QueryFirstOrDefaultAsync<Employee>(query, new { Id = id });
             }
         }
+
+        public async Task<int> UpdateEmployeeAsync(long id, string name)
+        {
+            using (var sqlConnection = new SqlConnection(_connectString))
+            {
+                var query = @"update Employee
+                                set Name = @Name, ModifiedDatetime = GETUTCDATE()
+                                where Id = @Id;";
+
+                return await sqlConnection.ExecuteAsync(query, new { name, id });
+            }
+        }
+
+        public async Task<int> DeleteEmployeeAsync(long id)
+        {
+            using (var sqlConnection = new SqlConnection(_connectString))
+            {
+                var query = @"delete from Employee where Id = @Id;";
+                return await sqlConnection.ExecuteAsync(query, new { id });
+            }
+        }
     }
 }
