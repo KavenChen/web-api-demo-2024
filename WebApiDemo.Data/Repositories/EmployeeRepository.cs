@@ -24,5 +24,14 @@ namespace WebApiDemo.Data.Repositories
                 await sqlConnection.ExecuteScalarAsync(query, new { employee.Id, employee.CreatedDatetime, employee.ModifiedDatetime, employee.Name });
             }
         }
+
+        public async Task<Employee> GetEmployeeAsync(long id)
+        {
+            using (var sqlConnection = new SqlConnection(_connectString))
+            {
+                var query = "select * from Employee (nolock) where Id = @Id;";
+                return await sqlConnection.QueryFirstOrDefaultAsync<Employee>(query, new { Id = id });
+            }
+        }
     }
 }

@@ -35,5 +35,26 @@ namespace WebApiDemo.Service.Services
                 return new Result<long, string>(false, default, $"CreateEmployeeAsync Error: Message: {ex.Message}, StackTrace: {ex.StackTrace}");
             }
         }
+
+        public async Task<Result<Employee, string>> GetEmployeeAsync(long id)
+        {
+            try
+            {
+                var employee = await _employeeRepository.GetEmployeeAsync(id);
+
+                if (employee == null)
+                {
+                    return new Result<Employee, string>(false, default, "GetEmployeeAsync Failed: employee not found.");
+                }
+                else
+                {
+                    return new Result<Employee, string>(true, employee, string.Empty);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Result<Employee, string>(false, default, $"GetEmployeeAsync Error: Message: {ex.Message}, StackTrace: {ex.StackTrace}");
+            }
+        }
     }
 }

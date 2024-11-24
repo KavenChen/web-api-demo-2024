@@ -10,5 +10,6 @@ namespace WebApiDemo.Data.Interfaces
     public interface IEmployeeRepository
     {
         Task CreateEmployeeAsync(Employee employee);
+        Task<Employee> GetEmployeeAsync(long id);
     }
 }
