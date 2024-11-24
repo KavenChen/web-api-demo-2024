@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApiDemo.Entity.ApiResponses;
 using WebApiDemo.Service.Interfaces;
 
 namespace WebApiDemo.Controllers
@@ -7,16 +8,32 @@ namespace WebApiDemo.Controllers
     [ApiController]
     public class EmployeeController : Controller
     {
-        private readonly IEmployeeService employeeService;
+        private readonly IEmployeeService _employeeService;
 
         public EmployeeController(IEmployeeService employeeService)
         {
-            this.employeeService = employeeService;
+            this._employeeService = employeeService;
         }
 
-        public IActionResult Index()
+        [HttpPost(Name = "")]
+        public async Task<ApiDataResponse<string>> PostAsync(string name)
         {
-            return View();
+            var createEmployeeResult = await _employeeService.CreateEmployeeAsync(name);
+            if (createEmployeeResult.IsSuccess)
+            {
+                return new ApiDataResponse<string>()
+                {
+                    Data = createEmployeeResult.Data.ToString()
+                };
+            }
+            else
+            {
+                return new ApiDataResponse<string>()
+                {
+                    Code = 500,
+                    Message = createEmployeeResult.Error
+                };
+            }
         }
     }
 }
